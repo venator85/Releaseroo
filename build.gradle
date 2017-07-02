@@ -1,0 +1,42 @@
+plugins {
+    id "java-gradle-plugin"
+}
+
+group = GROUP
+version = VERSION_NAME
+
+apply plugin: 'groovy'
+apply plugin: 'maven-publish'
+
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+    maven { url "https://maven.google.com" }
+}
+
+gradlePlugin {
+    plugins {
+        releaseroo {
+            id = "${GROUP}.${POM_ARTIFACT_ID}"
+            implementationClass = "eu.alessiobianchi.releaseroo.ReleaserooPlugin"
+        }
+    }
+}
+
+dependencies {
+    compile localGroovy()
+    compile 'org.jtwig:jtwig-core:5.85.3.RELEASE'
+    compile 'commons-io:commons-io:2.5'
+    compileOnly 'com.android.tools.build:gradle:3.0.0-alpha3'
+
+    testCompile 'junit:junit:4.12'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
